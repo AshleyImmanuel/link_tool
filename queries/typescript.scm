@@ -58,3 +58,14 @@
   (import_clause
     (identifier) @import.name)
   source: (string) @import.source)
+
+; Express-style routes: app.get("/path", handler) / router.post("/path", handler)
+(call_expression
+  function: (member_expression
+    object: (identifier) @_router
+    property: (property_identifier) @route.method
+    (#match? @_router "^(app|router)$")
+    (#match? @route.method "^(get|post|put|delete|patch|options|head|all)$"))
+  arguments: (arguments
+    (string) @route.path
+    (identifier) @route.handler))
